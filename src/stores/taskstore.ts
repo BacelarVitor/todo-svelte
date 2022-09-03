@@ -30,8 +30,11 @@ const tasks = writable<ITask[]>([
 ])
 
 function addTask(task: string) {
-  const newTask: ITask = { id: tasks.subscribe.length + 1, label: task, isDone: false }
+  let id = 0;
+  const unsubscribe = tasks.subscribe(tasks => id = tasks.length  + 1); 
+  const newTask: ITask = { id, label: task, isDone: false }
   tasks.update(tasks => [newTask, ...tasks])
+  unsubscribe();
 }
 
 function checkTask(taskId: number) {
@@ -49,7 +52,7 @@ function deleteTask(taskId: number) {
 }
 
 const customStorage = {
-  subscrive: tasks.subscribe,
+  subscribe: tasks.subscribe,
   checkTask,
   deleteTask,
   addTask

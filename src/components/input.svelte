@@ -1,9 +1,21 @@
-<form onSubmit={handleCreateTask} class="form">
+<script lang="ts">
+    import { createEventDispatcher } from 'svelte';
+    import { PlusCircle } from 'phosphor-svelte'
+
+    const dispath = createEventDispatcher();
+    let newTask: string = ''
+    const handleCreateTask = (event: SubmitEvent) => {
+        dispath('addTask', newTask)
+        newTask = ''
+    } 
+
+
+</script>
+<form on:submit|preventDefault={handleCreateTask} class="form">
     <input 
         class="input" 
         required
-        value={newTask}
-        onChange={handleNewTaskTextChange}
+        bind:value={newTask}
         placeholder="Adicione uma nova tarefa" />
     
     <button 
@@ -40,12 +52,13 @@
         color: var(--gray-100);
         border-radius: 8px;
         border: none;
+        cursor:pointer;
 
         display: flex;
         align-items: center;
         gap: 6px;
     }
-
+    
     @media (max-width: 768px) {
         .form {
             max-width: 80%;

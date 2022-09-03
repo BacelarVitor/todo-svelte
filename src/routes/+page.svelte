@@ -1,16 +1,34 @@
-<script>
+<script lang="ts">
     import '../global.css' 
     import  Header from '../components/header.svelte' 
+    import Input from '../components/input.svelte'
+    import TodoList from '../components/TodoList.svelte';
     import tasks from '../stores/taskstore'
 
+    //const unsubscribe = tasksStore.subscribe(todos => tasks = [...todos]);
 
+    function handleAddTask(event: CustomEvent) {
+        const todo = event.detail;
+        tasks.addTask(todo)
+    }
+
+    function handleCheckTask(event: CustomEvent) {
+        const taskId = event.detail;
+        tasks.checkTask(taskId)
+    }
+
+    function handleDeleteTask(event: CustomEvent) {
+        const taskId = event.detail;
+        console.log(taskId);
+        tasks.deleteTask(taskId)
+    }
 </script>
 
 <Header />
 <div class="wrapper">
-    <Input onCreateTask={handleNewTask} />
+    <Input on:addTask={handleAddTask}/>
     <main>
-    <TodoList tasks={tasks} handleCheckTask={checkTask} handleDeleteTask={deleteTask} />
+        <TodoList tasks={$tasks} on:checkTask={handleCheckTask} on:delete={handleDeleteTask} />
     </main>
 </div>
 
