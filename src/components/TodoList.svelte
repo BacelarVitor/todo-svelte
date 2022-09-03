@@ -10,9 +10,9 @@
         dispath('delete', event.detail)
     }
 
-    function checkTask(event: CustomEvent) {
-        console.log(event)
-        dispath('checkTask', event.detail)
+    function check(event: CustomEvent) {
+        const taskId = event.detail
+        dispath('checkTask', taskId)
     }
 </script>
 
@@ -32,7 +32,7 @@
                 <Task 
                     task={task} 
                     on:delete={deleteTask} 
-                    on:toogle={checkTask} 
+                    on:toggle={check} 
                 />
             {/each}
         {:else}

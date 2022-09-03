@@ -10,7 +10,7 @@
         dispath('delete', task.id)    
     }
 
-    function toogle() {
+    function toggleTask() {
         dispath('toggle', task.id)
     }
 
@@ -18,7 +18,7 @@
 <div class="wrapper">
     <div class="task">
         <label>
-            <input type="checkbox" name="task" bind:checked={task.isDone} on:click={toogle} />
+            <input type="checkbox" name="task" checked={task.isDone} on:change={toggleTask} />
             {#if task.isDone} 
                 <span class="checkIcon">
                     <CheckCircle size={24} /> 

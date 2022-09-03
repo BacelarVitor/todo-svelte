@@ -40,7 +40,7 @@ function addTask(task: string) {
 function checkTask(taskId: number) {
   tasks.update(tasks => {
     const index = tasks.findIndex(task => task.id === taskId);
-    if(index >=0) {
+    if(index >= 0) {
       tasks[index] = { ...tasks[index], isDone: !tasks[index].isDone }
     }
     return [...tasks]

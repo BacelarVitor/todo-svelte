@@ -5,8 +5,6 @@
     import TodoList from '../components/TodoList.svelte';
     import tasks from '../stores/taskstore'
 
-    //const unsubscribe = tasksStore.subscribe(todos => tasks = [...todos]);
-
     function handleAddTask(event: CustomEvent) {
         const todo = event.detail;
         tasks.addTask(todo)
@@ -19,7 +17,6 @@
 
     function handleDeleteTask(event: CustomEvent) {
         const taskId = event.detail;
-        console.log(taskId);
         tasks.deleteTask(taskId)
     }
 </script>
