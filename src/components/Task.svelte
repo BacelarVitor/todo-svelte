@@ -11,7 +11,7 @@
     }
 
     function toggleTask() {
-        dispath('toggle', task.id)
+        dispath('toggle', { taskId: task.id, currentState: task.isDone})
     }
 
 </script>

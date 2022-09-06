@@ -1,43 +1,31 @@
 import { writable } from "svelte/store";
+import { supabase } from "../supabase.js";
 import type { ITask } from '../interfaces/ITask';
 
-const tasks = writable<ITask[]>([
-    {
-        id: 1,
-        label: "Finish ignite challenge",
-        isDone: false, 
-    },
-    {
-        id: 2,
-        label: "Cardio",
-        isDone: false, 
-    },
-    {
-        id: 3,
-        label: "do the dishes",
-        isDone: true, 
-    },
-    {
-        id: 4,
-        label: "watch anime",
-        isDone: false, 
-    },
-    {
-        id: 5,
-        label: "play vavazin",
-        isDone: false, 
-    },
-])
+const tasks = writable<ITask[]>([])
+async function loadTodos() {
+  const { data, error} = await supabase.from('todos').select()
+  if (error) {
+    return console.error(error);
+  }
+  tasks.set(data);
+}
+async function addTask(task: string) {
+  const { data, error } = await supabase.from('todos').insert([{label: task}])
+  if(error) {
+    return console.log(error)
+  } 
 
-function addTask(task: string) {
-  let id = 0;
-  const unsubscribe = tasks.subscribe(tasks => id = tasks.length  + 1); 
-  const newTask: ITask = { id, label: task, isDone: false }
+  const newTask = data[0] as ITask
   tasks.update(tasks => [newTask, ...tasks])
-  unsubscribe();
 }
 
-function checkTask(taskId: number) {
+async function checkTask(taskId: number, currentState: boolean) {
+  const { data, error } = await supabase.from('todos').update({isDone: !currentState}).match({id: taskId})
+  if(error) {
+    return console.log(error)
+  } 
+
   tasks.update(tasks => {
     const index = tasks.findIndex(task => task.id === taskId);
     if(index >= 0) {
@@ -47,7 +35,12 @@ function checkTask(taskId: number) {
   })
 }
 
-function deleteTask(taskId: number) {
+async function deleteTask(taskId: number) {
+  const { _, error } = await supabase.from('todos').delete().match({id: taskId})
+  if(error) {
+    return console.log(error)
+  } 
+
   tasks.update(tasks => tasks.filter(task => task.id !== taskId))
 }
 
@@ -57,5 +50,6 @@ const customStorage = {
   deleteTask,
   addTask
 }
+await loadTodos();
 
 export default customStorage

@@ -11,8 +11,7 @@
     }
 
     function check(event: CustomEvent) {
-        const taskId = event.detail
-        dispath('checkTask', taskId)
+        dispath('checkTask', event.detail)
     }
 </script>
 
@@ -21,7 +20,8 @@
     <div class="info">    
         <p>Tarefas criadas <span>{tasks.length}</span></p>
         <p>
-            Concluídas <span>
+            Concluídas 
+            <span>
                 {tasks.filter(t => t.isDone)?.length + ' de ' + tasks.length}
             </span>
         </p>

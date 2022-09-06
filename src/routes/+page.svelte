@@ -1,7 +1,7 @@
 <script lang="ts">
     import '../global.css' 
     import  Header from '../components/header.svelte' 
-    import Input from '../components/input.svelte'
+    import TaskForm from '../components/TaskForm.svelte'
     import TodoList from '../components/TodoList.svelte';
     import tasks from '../stores/taskstore'
 
@@ -11,8 +11,8 @@
     }
 
     function handleCheckTask(event: CustomEvent) {
-        const taskId = event.detail;
-        tasks.checkTask(taskId)
+        const {taskId, currentState }= event.detail;
+        tasks.checkTask(taskId, currentState)
     }
 
     function handleDeleteTask(event: CustomEvent) {
@@ -23,12 +23,12 @@
 
 <Header />
 <div class="wrapper">
-    <Input on:addTask={handleAddTask}/>
+    <TaskForm on:addTask={handleAddTask}/>
     <main>
         <TodoList tasks={$tasks} on:checkTask={handleCheckTask} on:delete={handleDeleteTask} />
     </main>
 </div>
-
+<!--//s...37 -->
 <style>
     .wrapper {
         max-width: 46rem;
